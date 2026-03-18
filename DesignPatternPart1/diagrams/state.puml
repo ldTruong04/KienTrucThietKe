@@ -1,0 +1,25 @@
+@startuml
+package "state" {
+  interface OrderState {
+    + handleOrder(order: Order): void
+  }
+
+  class NewState
+  class ProcessingState
+  class DeliveredState
+  class CancelledState
+
+  NewState ..|> OrderState
+  ProcessingState ..|> OrderState
+  DeliveredState ..|> OrderState
+  CancelledState ..|> OrderState
+
+  class Order {
+    - state: OrderState
+    + setState(s: OrderState): void
+    + handle(): void
+  }
+
+  Order --> OrderState : has
+}
+@enduml

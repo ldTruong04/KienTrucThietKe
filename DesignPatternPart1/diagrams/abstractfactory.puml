@@ -1,0 +1,36 @@
+@startuml
+package "abstractfactory" {
+  interface Button {
+    + render(): void
+  }
+
+  interface Checkbox {
+    + check(): void
+  }
+
+  interface GUIFactory {
+    + createButton(): Button
+    + createCheckbox(): Checkbox
+  }
+
+  class MacButton
+  class WinButton
+  class MacCheckbox
+  class WinCheckbox
+  class MacFactory
+  class WindowsFactory
+
+  MacButton ..|> Button
+  WinButton ..|> Button
+  MacCheckbox ..|> Checkbox
+  WinCheckbox ..|> Checkbox
+
+  MacFactory ..|> GUIFactory
+  WindowsFactory ..|> GUIFactory
+
+  MacFactory --> MacButton : creates
+  MacFactory --> MacCheckbox : creates
+  WindowsFactory --> WinButton : creates
+  WindowsFactory --> WinCheckbox : creates
+}
+@enduml

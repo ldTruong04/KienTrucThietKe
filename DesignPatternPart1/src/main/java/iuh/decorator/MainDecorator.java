@@ -16,3 +16,53 @@ public class MainDecorator {
     }
 
 }
+
+@startuml
+interface Product {
+  + getDescription(): String
+  + getPrice(): double
+}
+
+class BasicProduct {
+  - price: double
+  - description: String
+  + BasicProduct(price: double)
+  + getDescription(): String
+  + getPrice(): double
+}
+
+abstract class ProductDecorator {
+  - product: Product
+  + ProductDecorator(product: Product)
+  + getDescription(): String
+  + getPrice(): double
+}
+
+class GiftWrapDecorator {
+  - wrapCost: double
+  + GiftWrapDecorator(product: Product)
+  + getDescription(): String
+  + getPrice(): double
+}
+
+class ShippingDecorator {
+  - shippingCost: double
+  + ShippingDecorator(product: Product)
+  + getDescription(): String
+  + getPrice(): double
+}
+
+class WarrantyDecorator {
+  - warrantyCost: double
+  + WarrantyDecorator(product: Product)
+  + getDescription(): String
+  + getPrice(): double
+}
+
+Product <|.. BasicProduct
+Product <|.. ProductDecorator
+ProductDecorator <|-- GiftWrapDecorator
+ProductDecorator <|-- ShippingDecorator
+ProductDecorator <|-- WarrantyDecorator
+ProductDecorator *-- Product : wraps
+@enduml

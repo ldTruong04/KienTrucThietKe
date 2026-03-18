@@ -1,0 +1,23 @@
+@startuml
+package "strategy" {
+  interface TaxStrategy {
+    + calculate(amount: double): double
+  }
+
+  class VATStrategy
+  class ConsumptionTaxStrategy
+  class LuxuryTaxStrategy
+
+  VATStrategy ..|> TaxStrategy
+  ConsumptionTaxStrategy ..|> TaxStrategy
+  LuxuryTaxStrategy ..|> TaxStrategy
+
+  class Product {
+    - price: double
+    + setTaxStrategy(ts: TaxStrategy): void
+    + calculateTax(): double
+  }
+
+  Product --> TaxStrategy : uses
+}
+@enduml

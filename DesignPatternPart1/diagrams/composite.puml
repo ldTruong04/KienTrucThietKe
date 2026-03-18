@@ -1,0 +1,35 @@
+@startuml
+interface FileComponent {
+  + showInfo(indent: String): void
+  + add(component: FileComponent): void
+  + remove(component: FileComponent): void
+  + getChild(index: int): FileComponent
+}
+
+class File {
+  - name: String
+  + File(name: String)
+  + showInfo(indent: String): void
+  + add(component: FileComponent): void
+  + remove(component: FileComponent): void
+  + getChild(index: int): FileComponent
+}
+
+class Folder {
+  - name: String
+  - children: List<FileComponent>
+  + Folder(name: String)
+  + showInfo(indent: String): void
+  + add(component: FileComponent): void
+  + remove(component: FileComponent): void
+  + getChild(index: int): FileComponent
+}
+
+class MainComposite {
+  + main(args: String[]): void
+}
+
+FileComponent <|.. File
+FileComponent <|.. Folder
+Folder *-- FileComponent : children
+@enduml

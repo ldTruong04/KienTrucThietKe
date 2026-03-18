@@ -1,0 +1,19 @@
+@startuml
+package "factorymethod" {
+  interface Transport
+  class Truck
+  class Ship
+  interface TransportFactory
+  class RoadFactory
+  class SeaFactory
+
+  Truck ..|> Transport
+  Ship ..|> Transport
+
+  RoadFactory ..|> TransportFactory
+  SeaFactory ..|> TransportFactory
+
+  RoadFactory --> Truck : create()
+  SeaFactory --> Ship : create()
+}
+@enduml

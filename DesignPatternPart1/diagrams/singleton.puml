@@ -1,0 +1,10 @@
+@startuml
+package "singleton" {
+  class Logger {
+    - instance: Logger
+    - logFile: String
+    + getInstance(): Logger
+    + log(message: String): void
+  }
+}
+@enduml
