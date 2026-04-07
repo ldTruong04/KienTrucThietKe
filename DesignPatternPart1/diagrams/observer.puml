@@ -1,0 +1,59 @@
+@startuml
+package "observer" {
+  interface Observer {
+    + update(message: String): void
+  }
+
+  interface Subject {
+    + attach(o: Observer): void
+    + detach(o: Observer): void
+    + notifyObservers(): void
+  }
+
+  class Stock {
+    - observers: List<Observer>
+    - price: double
+    + setPrice(price: double): void
+    + attach(o: Observer): void
+    + detach(o: Observer): void
+    + notifyObservers(): void
+  }
+
+  class Task {
+    - observers: List<Observer>
+    - status: String
+    + setStatus(status: String): void
+    + attach(o: Observer): void
+    + detach(o: Observer): void
+    + notifyObservers(): void
+  }
+
+  class Investor {
+    - name: String
+    + Investor(name: String)
+    + update(message: String): void
+  }
+
+  class TeamMember {
+    - name: String
+    + TeamMember(name: String)
+    + update(message: String): void
+  }
+
+  class MainObserver {
+    + main(args: String[]): void
+  }
+
+  Stock ..|> Subject
+  Task ..|> Subject
+
+  Investor ..|> Observer
+  TeamMember ..|> Observer
+
+  Subject "1" o-- "*" Observer : manages
+  MainObserver ..> Stock : creates/uses
+  MainObserver ..> Task : creates/uses
+  MainObserver ..> Investor : creates
+  MainObserver ..> TeamMember : creates
+}
+@enduml

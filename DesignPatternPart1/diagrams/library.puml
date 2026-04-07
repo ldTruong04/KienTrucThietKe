@@ -1,0 +1,105 @@
+@startuml
+package "library" {
+  interface Observer {
+    + update(message: String): void
+  }
+
+  class User {
+    - name: String
+    + User(name: String)
+    + update(message: String): void
+  }
+
+  class Library {
+    - instance: Library {static}
+    - books: List<Book>
+    - observers: List<Observer>
+    + getInstance(): Library {static}
+    + addBook(b: Book): void
+    + removeBook(b: Book): void
+    + getBooks(): List<Book>
+    + addObserver(o: Observer): void
+    + notifyObservers(msg: String): void
+  }
+
+  abstract class Book {
+    # title: String
+    # author: String
+    # genre: String
+    + getTitle(): String
+    + getAuthor(): String
+    + getGenre(): String
+    + toString(): String
+  }
+
+  class PaperBook
+  class EBook
+  class AudioBook
+
+  abstract class BookFactory {
+    + createBook(t: String, a: String, g: String): Book
+  }
+
+  class PaperBookFactory
+  class EBookFactory
+  class AudioBookFactory
+
+  interface SearchStrategy {
+    + search(books: List<Book>, keyword: String): List<Book>
+  }
+
+  class SearchByTitle
+  class SearchByAuthor
+  class SearchByGenre
+
+  class SearchContext {
+    - strategy: SearchStrategy
+    + setStrategy(strategy: SearchStrategy): void
+    + execute(books: List<Book>, keyword: String): List<Book>
+  }
+
+  interface Borrow {
+    + getDescription(): String
+  }
+
+  class BasicBorrow
+
+  abstract class BorrowDecorator {
+    # borrow: Borrow
+  }
+
+  class ExtendBorrow
+  class SpecialEdition
+
+  class MainApp {
+    + main(args: String[]): void
+  }
+
+  User ..|> Observer
+  Library "1" o-- "*" Book
+  Library "1" o-- "*" Observer
+
+  PaperBook --|> Book
+  EBook --|> Book
+  AudioBook --|> Book
+
+  PaperBookFactory --|> BookFactory
+  EBookFactory --|> BookFactory
+  AudioBookFactory --|> BookFactory
+
+  SearchByTitle ..|> SearchStrategy
+  SearchByAuthor ..|> SearchStrategy
+  SearchByGenre ..|> SearchStrategy
+  SearchContext --> SearchStrategy : uses
+
+  BasicBorrow ..|> Borrow
+  BorrowDecorator ..|> Borrow
+  ExtendBorrow --|> BorrowDecorator
+  SpecialEdition --|> BorrowDecorator
+
+  MainApp ..> Library : uses
+  MainApp ..> BookFactory : uses
+  MainApp ..> SearchContext : uses
+  MainApp ..> Borrow : uses
+}
+@enduml

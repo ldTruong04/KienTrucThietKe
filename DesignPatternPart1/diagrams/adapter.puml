@@ -1,0 +1,29 @@
+@startuml
+package "adapter" {
+  interface JsonService {
+    + processJson(json: String): void
+  }
+
+  class XmlService {
+    + processXml(xml: String): void
+  }
+
+  class JsonAdapter {
+    - xmlService: XmlService
+    + JsonAdapter(xmlService: XmlService)
+    + processJson(json: String): void
+    - convertJsonToXml(json: String): String
+  }
+
+  class MainAdapter {
+    + main(args: String[]): void
+  }
+
+  JsonAdapter ..|> JsonService
+  JsonAdapter --> XmlService : adapts to
+
+  MainAdapter ..> XmlService : creates
+  MainAdapter ..> JsonAdapter : creates
+  MainAdapter ..> JsonService : uses
+}
+@enduml
