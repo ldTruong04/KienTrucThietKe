@@ -1,9 +1,0 @@
-services:
-  nginx:
-    image: nginx:latest
-    container_name: nginx_react_bai13
-    restart: always
-    ports:
-      - "8085:80"
-    volumes:
-      - ./app:/usr/share/nginx/html:ro

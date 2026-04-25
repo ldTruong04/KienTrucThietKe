@@ -1,1 +1,20 @@
 /.metadata/
+node_modules/
+dist/
+build/
+*.log
+.env
+Dockerfile*
+docker-compose*.yml
+# NodeJS
+node_modules/
+
+# Java Maven
+target/
+*.class
+
+# OS
+.DS_Store
+
+# Logs
+*.log
