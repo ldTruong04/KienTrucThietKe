@@ -1,0 +1,32 @@
+services:
+  flask1:
+    build: .
+    container_name: bt3_flask1
+    restart: always
+    networks:
+      - lb_network
+
+  flask2:
+    build: .
+    container_name: bt3_flask2
+    restart: always
+    networks:
+      - lb_network
+
+  nginx:
+    image: nginx:latest
+    container_name: bt3_nginx
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - flask1
+      - flask2
+    networks:
+      - lb_network
+
+networks:
+  lb_network:
+    driver: bridge

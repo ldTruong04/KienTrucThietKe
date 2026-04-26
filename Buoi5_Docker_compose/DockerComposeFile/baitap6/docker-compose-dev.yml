@@ -1,0 +1,23 @@
+# Development mode - code mounted from host, hot reload enabled
+services:
+  app:
+    build: ./app
+    container_name: bt6_app_dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app:/app    # Mount source code for live reload
+    environment:
+      FLASK_ENV: development
+      FLASK_DEBUG: 1
+    command: python app.py
+
+  tests:
+    build: ./app
+    container_name: bt6_tests
+    volumes:
+      - ./app:/app          # Mount source code
+      - ./tests:/tests      # Mount test files
+    entrypoint: ["pytest", "/tests/", "-v", "--tb=short"]
+    depends_on:
+      - app

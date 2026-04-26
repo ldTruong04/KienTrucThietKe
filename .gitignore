@@ -4,8 +4,6 @@ dist/
 build/
 *.log
 .env
-Dockerfile*
-docker-compose*.yml
 # NodeJS
 node_modules/
 

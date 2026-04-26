@@ -1,0 +1,80 @@
+services:
+  vote:
+    build: ./vote
+    container_name: bt5_vote
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      REDIS_HOST: redis
+    depends_on:
+      - redis
+    networks:
+      - frontend
+      - backend
+
+  result:
+    build: ./result
+    container_name: bt5_result
+    restart: always
+    ports:
+      - "5001:5001"
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: votes
+    depends_on:
+      - postgres
+    networks:
+      - frontend
+      - backend
+
+  redis:
+    image: redis:latest
+    container_name: bt5_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+  worker:
+    build: ./worker
+    container_name: bt5_worker
+    restart: always
+    environment:
+      REDIS_HOST: redis
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: votes
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - backend
+
+  postgres:
+    image: postgres:15
+    container_name: bt5_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: votes
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+volumes:
+  postgres_data:
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
