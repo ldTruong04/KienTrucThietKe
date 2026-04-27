@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik_proxy
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  mock_flask_service:
+    image: traefik/whoami
+    container_name: flask_service
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.flask.rule=Host(`flask.localhost`)"
+      - "traefik.http.routers.flask.entrypoints=web"
+
+  mock_wordpress_service:
+    image: nginx:alpine
+    container_name: wordpress_service
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wordpress.rule=Host(`wordpress.localhost`)"
+      - "traefik.http.routers.wordpress.entrypoints=web"
+      - "traefik.http.services.wordpress.loadbalancer.server.port=80"
