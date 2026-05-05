@@ -1,0 +1,9 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "description": "Shared Redis client",
+  "main": "redisClient.js",
+  "dependencies": {
+    "redis": "^4.6.10"
+  }
+}

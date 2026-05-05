@@ -1,0 +1,12 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "description": "Seed data script",
+  "scripts": {
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "redis": "^4.6.10"
+  }
+}
